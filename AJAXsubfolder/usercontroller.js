@@ -7,6 +7,13 @@
 
 const baseurl = "http://localhost:62513/api"
 
+//ready function to get one user on click
+$(() => {
+    $("#pkbutton").on("click", () => {
+        getPk();
+    });
+})
+
 const getAll = () => {
     $.getJSON(`${baseurl}/users`)
         //all data returned from getjson users is stored in res if successful
@@ -15,6 +22,28 @@ const getAll = () => {
             display(res);//puts all data in a table
         });
     }
+
+const getPk = () => {
+    //pull number out of input control that the user keyed in and store in id
+    let id = $("#ppk").val();
+    $.getJSON(`${baseurl}/users/${id}`)
+    .done(res => {//res is resolved
+        console.log(res);//displays all data to the console
+        displaySingle(res);//puts all data in a table
+    });
+}
+
+//should display a single user instance
+const displaySingle = (user) => {
+    $("#pid").val(user.id);
+    $("#pusername").val(user.username);
+    $("#pfirstname").val(user.firstName);
+    $("#plastname").val(user.lastName);
+    $("#pphone").val(user.phone);
+    $("#pemail").val(user.email);
+    $("#previewer").val(user.isReviewer);
+    $("#padmin").val(user.isAdmin);
+}
 
 const display = (users) => {
         let tbody = $("tbody");
@@ -26,8 +55,8 @@ const display = (users) => {
                 let tdname = $(`<td>${user.firstname} ${user.lastname}</td>`);
                 let tdphone = $(`<td>${user.phone}</td>`);
                 let tdemail = $(`<td>${user.email}</td>`);
-                let tdreviewer = $(`<td>${user.IsReviewer}</td>`);
-                let tdadmin = $(`<td>${user.IsAdmin}</td>`);
+                let tdreviewer = $(`<td>${user.isReviewer}</td>`);
+                let tdadmin = $(`<td>${user.isAdmin}</td>`);
                 tr.append(tdId)
                 .append(tdusername)
                 .append(tdname)
@@ -38,7 +67,9 @@ const display = (users) => {
                 tbody.append(tr);
             }
 }
-getAll();
+//getAll();
+
+
 
 
        
